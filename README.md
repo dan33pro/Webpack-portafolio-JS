@@ -58,3 +58,60 @@ el siguiente script, ejecutamos con `npm run build`
 ```
 "build": "webpack --mode production"
 ```
+
+## Babel Loader para JavaScript
+
+Babel nos permite hacer que nuestro código sea compatible con
+todos los navegadores, para agregarlo al proyecto debemos agregar
+las siguientes dependencias.
+
+```npm
+npm install babel-loader @babel/core @babel/preset-env @babel/plugin-transform-runtime -D
+```
+
+El plugin nos permite trabajar con asincronismo, ahora tenemos que pasarle
+la configuración a nuestro proyecto de Babel, para esto creamos un archivo
+con nombre `.babelrc` donde vamos a añadir:
+
+```
+{
+    "presets": [
+        "@babel/preset-env"
+    ],
+    "plugins": [
+        "@babel/plugin-transform-runtime"
+    ]
+}
+```
+
+Podemos tener N presets y plugins, en este caso el preset-env
+es para trabajar con JavaScript moderno, y el plugin ya lo mencionamos
+es para que tenga atención con el asincronismo.
+
+Ahora volvemos a nuestro archivo [webpack.config.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js) y agregamos debajo de resolve
+
+```
+module: {
+        rules: [
+            {
+                test: /\.m?js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader'
+                }
+            }
+        ]
+    },
+```
+
+Este module es un objeto que tiene un arreglo de rules, dentro
+del arreglo añadimos un objeto con propiedad `test:` que sive para
+decirle que sean todos los archivos que terminen con `.mjs` o `.js`, 
+con `exclude:` le decimos que ignore todos los que esten el `node_modules`
+y le decimos con `use:` que use como `loader` `babel-loader`.
+
+Volvemos a compilar a producción con el srcipt `build`
+
+````npm
+npm run build
+```
