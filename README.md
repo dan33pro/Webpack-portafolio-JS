@@ -6,7 +6,7 @@ profesor Oscar Barajas [repoOriginal](https://github.com/gndx/js-portfolio)
 
 Lo primero que se hizo fue organizar la estructura base del
 proyecto, luego se inicializo el control de versiones de Git, 
-también, usamos `npm init`, `npm install webpack wepack-cli -D`,
+también, usamos `npm init -y`, `npm install webpack webpack-cli -D`,
 `npx webpack --mode production`.
 
 Ahora vamos a crear un archivo de configuración de Webpack, para esto
@@ -34,7 +34,7 @@ Ahora creamos un objeto para exportar con la configuración deseada:
 3. Luego las extenciones con las que vamos a trabajar
 
 ```javascript
-module.export = {
+module.exports = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -114,4 +114,51 @@ Volvemos a compilar a producción con el srcipt `build`
 
 ````npm
 npm run build
+```
+
+## HTML en Webpack
+
+Para trabajar con HTML y Webpack necesitamos instalar la siguiente
+dependencia:
+
+```npm
+npm install html-webpack-plugin -D
+```
+
+Ahora agregamos la configuración del plugin a [webpack.config.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js), donde agregamos:
+
+```javascript
+const htmlWebpackPlugin = require('html-webpack-plugin');
+```
+
+Y añadimos debajo de `module` 
+
+```javascript
+plugins: [
+        new htmlWebpackPlugin({
+            inject: true,
+            template: './public/index.html',
+            filename: './index.html'
+        })
+    ]
+```
+
+Esto quiere decir `inject` inserción de los elementos, el `template`
+es la ruta del `index.html` con el que estamos tranajando y `filename`
+es el nombre del archivo resultante en el directorio `dist`.
+
+Y removemos la linea `<script type="module" src="../src//index.js"></script>`
+del archivo [index.html](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/public/index.html) ya que no la necesitamos.
+
+Ahora ya podemos correr `npm run build` y ver el resultado
+
+## Loaders para CSS y preprocesadores de CSS
+
+Comosiempre lo primero es agragar las depndencias de desarrollo que
+necesitamos, css-loader para procesar archivos .css y un plugin para
+poder unir css dividido en distintas partes de la aplicación, entonces
+corremos el comando:
+
+```npm
+npm install mini-css-extract-plugin css-loader -D
 ```
