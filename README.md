@@ -170,7 +170,7 @@ esta conexión.
 
 Nos movemos al archivo [index.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/src/index.js) y removemos el `console.log('hola');` no lo necesitamos ya, lo siguiente es importar los estilos en este archivo, para esto usamos:
 
-````javascript
+```javascript
 import './styles/main.css';
 ```
 
