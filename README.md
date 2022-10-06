@@ -112,7 +112,7 @@ y le decimos con `use:` que use como `loader` `babel-loader`.
 
 Volvemos a compilar a producción con el srcipt `build`
 
-````npm
+```npm
 npm run build
 ```
 
