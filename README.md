@@ -240,8 +240,37 @@ body
 
 Y lo importamos en nuestro [index.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/src/index.js) con la linea:
 
-````javascript
+```javascript
 import './styles/vars.styl';
 ```
 
 Ahora ya podemos correr el comando `npm run dev` y ver que es lo que pasa.
+
+## Copia de archivos con Webpack
+
+Instalamos el siguiente plugin:
+
+```npm
+npm install copy-webpack-plugin -D
+```
+
+Ahora vamos a ver que archivos debemos mover desde nuestra carpeta de `src` hacía la de `dist`, con esto modificamos nuestro [webpack.config-js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js) y agregamos la constante para importar el plugin que recien instalamos:
+
+```javascript
+const CopyPlugin = require('copy-webpack-plugin');
+```
+
+Con esto agregamos lo siguiente al arreglo `plugins` del archivo como su siguiente elemento:
+
+```javascript
+new CopyPlugin({
+    patterns: [ 
+        {
+            from: path.resolve(__dirname, "src", "assets/images"),
+            to: "assets/images"
+        } 
+    ]
+}),
+```
+
+Y ahora en nuestro [Template.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/src/templates/Template.js) que esta dentro de `src/templates` vamos a modificar todas las lineas donde traemos imagenes de `src="../src/assets/images/twitter.png"` a `src="assets/images/twitter.png"`, con esto ya podemos probar como simepre con el comando `npm run dev`.
