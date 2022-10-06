@@ -152,7 +152,9 @@ del archivo [index.html](https://github.com/dan33pro/Webpack-portafolio-JS/blob/
 
 Ahora ya podemos correr `npm run build` y ver el resultado
 
-## Loaders para CSS y preprocesadores de CSS
+## Webpack y CSS
+
+### Loadrs para CCS
 
 Comosiempre lo primero es agragar las depndencias de desarrollo que
 necesitamos, css-loader para procesar archivos .css y un plugin para
@@ -162,3 +164,84 @@ corremos el comando:
 ```npm
 npm install mini-css-extract-plugin css-loader -D
 ```
+
+Removemos `<link rel="stylesheet" href="../src/styles/main.css">` de nuestro template [inde.html](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/public/index.html) ya que Webpack se encargara de hacer
+esta conexión.
+
+Nos movemos al archivo [index.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/src/index.js) y removemos el `console.log('hola');` no lo necesitamos ya, lo siguiente es importar los estilos en este archivo, para esto usamos:
+
+````javascript
+import './styles/main.css';
+```
+
+Ahora agregamos la configuración necesaria de [webpack.config-js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js) que necesitamos para que pueda trabajar con el loader que necesitamos, así que agregamos en el.
+
+1. La connstante donde importamos el plugin que instalamos:
+    ```javascript
+    const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+    ```
+2.  La regla necesaria para reconocer archivos `.css` dentro del arreglo `rules` con el `loader` `css-loader` que también instalamos, sería la siguiente:
+    ```javascript
+    {
+        test: /\.css$/i,
+        use: [
+                MiniCssExtractPlugin.loader,
+                'css-loader'
+            ],
+        },
+    ```
+
+    Y ahora agregamos el plugin `mini-css-extract-plugin` dentro del arreglo `plugins` como una nueva instancia de nuestra constante, quedaría así:
+
+    ```javascript
+    plugins: [
+        new HtmlWebpackPlugin({
+            inject: true,
+            template: './public/index.html',
+            filename: './index.html'
+        }),
+        new MiniCssExtractPlugin(),
+    ]
+    ```
+
+Con esto ya podemos probar el resultado con que es el siguiente script `"dev": "webpack --mode development"`  agregado en el [package.json](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/package.json) corriendo el comando `npm run dev`.
+
+### Preprocesadores CSS (Stylus)
+
+Comenzamos igual instalamos las dependencias necesarias:
+
+```npm
+npm install stylus stylus-loader -D
+```
+
+Como Stylus usa una extensión `.styl` hay que añadirlo al arreglo `rules` de [webpack.config-js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js), sencillamente modificamos la regla para `.css` existente, quedaría así:
+
+```javascript
+{
+    test: /\.css|.styl$/i,
+    use: [
+        MiniCssExtractPlugin.loader,
+        'css-loader',
+        'stylus-loader'
+    ],
+},
+```
+
+Ya quedo la configuración de nuestro preprocesador de CSS, ahora a modo de prueba podemos crear un archivo `vars.styl` con lo que queramos dentro de `src/styles/`, por ejemplo:
+
+```styl
+$color-white = blue
+$color-gray = #3F3D3D
+
+body
+    color $color-white
+    background $color-gray
+```
+
+Y lo importamos en nuestro [index.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/src/index.js) con la linea:
+
+````javascript
+import './styles/vars.styl';
+```
+
+Ahora ya podemos correr el comando `npm run dev` y ver que es lo que pasa.
