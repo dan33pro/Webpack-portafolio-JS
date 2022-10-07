@@ -13,7 +13,12 @@ html {
 }
 
 body {
-	margin: 0
+	margin: 0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 article,
@@ -247,7 +252,7 @@ body {
 	width: 100%;
 	background: #fff;
 	border-radius: 3px;
-	box-shadow: 0 0 1px rgba(0, 0, 0, .5);
+	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 	overflow: hidden;
 	text-align: center;
 	z-index: 5

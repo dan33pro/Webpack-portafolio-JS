@@ -384,3 +384,69 @@ Esto me generaba conflictos en el resultado, en su lugar en el array `rules` añ
 ```
 
 Con esto se solucionaron mis problemas
+
+## Optimización: hashes, compresión y minificación de archivos
+
+Asignar un `hash` a cada archivo resulta importante para que nuestros usuarios no tengan problemas con la memoria cache una vez les entregamos una nueva versión, permitiendo que se carguen los recursos nuevos que remplazan a los antiguos.
+
+1. Instalamos las dependencias necesarias
+
+    ```npm
+    npm install css-minimizer-webpack-plugin terser-webpack-plugin -D
+    ```
+
+2. Añadimos los recursos a nuestra configuración
+
+    - Agregamos en [webpack.config.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js) las constantes:
+
+    ```javascript
+    const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+    const TerserPlugin = require('terser-webpack-plugin');
+    ```
+    
+    Y debajo de `plugins` agregamos
+
+    ```javascript
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new CssMinimizerPlugin(),
+            new TerserPlugin(),
+        ],
+    }
+    ```
+
+    Con esto damos soporte de optimización para `css` y `Terser` para `JavaScript`
+
+3. Otra cosa recomendable es modificar la propiedad `output` de `module.exports` por:
+
+    ```javascript
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].[contenthash].js',
+        assetModuleFilename: 'assets/images/[hash][ext][query]',
+        clean: true,
+    },
+    ```
+
+    Con esto nuestro `filename` ya usamos `hash`, para identificar cada `build`, ahora para las fuentes
+
+    ```javascript
+    {
+        test: /\.woff|.woff2$/i,
+        type: "asset/resource",
+        generator: {
+            filename: "assets/fonts/[name].[contenthash].[ext]",
+        },
+    },
+    ```
+
+    - En `plugins` podemos modificar `new MiniCssExtractPlugin()` por
+
+    ```javascript
+    new MiniCssExtractPlugin({
+        filename: 'assets/[name].[contenthash].css',
+    }),
+    ```
+
+4. Ahora compilamos el proyecto `npm run dev`
