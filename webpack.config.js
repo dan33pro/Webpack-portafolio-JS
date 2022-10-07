@@ -8,6 +8,8 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'main.js',
+        assetModuleFilename: 'assets/images/[hash][ext][query]',
+        clean: true,
     },
     resolve: {
         extensions: ['.js'],
@@ -29,6 +31,17 @@ module.exports = {
                     'stylus-loader'
                 ],
             },
+            {
+                test: /\.png/,
+                type: 'asset/resource'
+            },
+            {
+                test: /\.woff|.woff2$/i,
+                type: "asset/resource",
+                generator: {
+                    filename: "assets/fonts/[name][ext]",
+                },
+            },
         ],
     },
     plugins: [
@@ -39,11 +52,11 @@ module.exports = {
         }),
         new MiniCssExtractPlugin(),
         new CopyPlugin({
-            patterns: [ 
+            patterns: [
                 {
                     from: path.resolve(__dirname, "src", "assets/images"),
                     to: "assets/images"
-                } 
+                }
             ]
         }),
     ]

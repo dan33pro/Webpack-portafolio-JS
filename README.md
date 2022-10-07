@@ -274,3 +274,112 @@ new CopyPlugin({
 ```
 
 Y ahora en nuestro [Template.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/src/templates/Template.js) que esta dentro de `src/templates` vamos a modificar todas las lineas donde traemos imagenes de `src="../src/assets/images/twitter.png"` a `src="assets/images/twitter.png"`, con esto ya podemos probar como simepre con el comando `npm run dev`.
+
+
+## Loaders de imágenes
+
+Para este indice vamos a hacer uso de `asset module` que nos provee Webpack así que no tendremos que añadir ningun loader, para esto tenemos que añadir una nueva regla en el array `rules` para trabajar con archivos `.png`, así que en nuestro archivo de [webpack.config.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js)  añadimos el siguiente objeto dentro del arreglo mencionado.
+
+```javascript
+{
+    test: /\.png/,
+    type: 'asset/resource'
+},
+```
+En el indice anterior vimos como copiar archivos con Webpack, en este indice vamos a continuar mejorando este aspecto, así que en lugar de poner la ruta directamente en el `src=""` en su lugar podemos importar las imagenes y añadirlas en la propiedad que lo necesite, como una practica más sostenible.
+
+Entonces importamos en el archivo [Template.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/src/templates/Template.js) los recursos con las siguientes lineas, es necesario el paso de `webpack.config.js` para poder hacer esto:
+
+```javascript
+import github from '../assets/images/github.png';
+import twitter from '../assets/images/twitter.png';
+import instagram from '../assets/images/instagram.png';
+```
+
+Y en cada atributo `src=""` agregamos la variable especifica ejemplo:
+
+```javascript
+<img src="${twitter}" />
+```
+
+Ahora probemolo con `npm run dev`, ya con esto notaremos que las imagenes estaran optimizadas detro de la carpeta `dist`.
+
+## Loaders de fuentes
+
+Una buena practica cuando integramos fuentes en nuestros proyectos es dejar de llamarlas desde sitios externos sino incorporarlas directamente en nuestro proyecto, para esto necesitamos:
+
+1. Identificar las fuentes que estamos usando
+    
+    En nuestro caso en el archivo [main.css](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/src/styles/main.css) estamos importando la fuente siguiente `@import "https://fonts.googleapis.com/css?family=Ubuntu:300,400,500";`, por lo que no las estamos descargando en `.woff`, nosotros ya hemos
+    recopilado una lista de fuentes para este proyecto, que estan en `src/assets/fonts` en el formato optimizado para la Web.
+
+2. Ahora ya podemos remover la linea `@import "https://fonts.googleapis.com/css?family=Ubuntu:300,400,500";` en su lugar vamos a poner:
+
+    ```css
+    @font-face {
+	    font-family: 'Ubuntu';
+	    src: url('../assets/fonts/ubuntu-regular.woff2') format('woff2'),
+	    	url('../assets/fonts/ubuntu-regular.woff') format('woff');
+	    font-weight: 400;
+	    font-style: normal;
+    }
+    ```
+
+3. También necesitamos copiar las fuentes de `assets` a la carpeta `dist`, para esto necesitamos instalar unas dependencias que nos permiten leer archivos y moverlos, así que los instalamos con:
+
+    ```npm
+    npm install url-loader file-loader -D
+    ```
+
+    > Actualmente ya no es necesario e incluso puede ocasionar conflictos con Webpack 5
+
+4. Nos movemos al archivo [webpack.config.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js) y añadimos un nuevo elemento al arreglo `rules` con la siguiente configuración
+
+    ```javascript
+    {
+        test: /\.(woff|woff2)$/,
+        use: {
+            loader: 'url-loader',
+            options: {
+                limit: 10000,
+                mimetype: "application/font-woff",
+                name: "[name].[ext]",
+                outputPath: "./assets/fonts/",
+                publicPath: "./assets/fonts/",
+                esModule: false,
+            },
+        }
+    }
+    ```
+    > Esta regla ya no es necesaria tal como esta arriba, revisar más abajo `Webpack 5 y conflictos`
+    Y en la propiedad `output` del `module.exports` quedaría así
+
+    ```javascript
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'main.js',
+        assetModuleFilename: 'assets/images/[hash][ext][query]'
+    },
+    ```
+
+    Nuevamente podemos compilar nuestro proyecto con `npm run dev`.
+
+    > No me cargaba la fuente, así que decidi probar otra cosa
+### Webpack 5 y conflictos
+
+Desde que salio Webpack 5 ya no es necesario instalar las dependencias de url-loader y file-loader.
+En la versión 5 de webpack integraron las funciones que hacían esas 2 dependencias a los assets modules.
+
+Esto me generaba conflictos en el resultado, en su lugar en el array `rules` añadimos lo siguiente
+
+```javascript
+{
+    test: /\.woff|.woff2$/i,
+    type: "asset/resource",
+    generator: {
+        filename: "assets/fonts/[name][ext]",
+    },
+},
+```
+
+Con esto se solucionaron mis problemas
