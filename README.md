@@ -59,7 +59,9 @@ el siguiente script, ejecutamos con `npm run build`
 "build": "webpack --mode production"
 ```
 
-## Babel Loader para JavaScript
+## Loaders y Plugins en Webpack
+
+### Babel Loader para JavaScript
 
 Babel nos permite hacer que nuestro código sea compatible con
 todos los navegadores, para agregarlo al proyecto debemos agregar
@@ -116,7 +118,7 @@ Volvemos a compilar a producción con el srcipt `build`
 npm run build
 ```
 
-## HTML en Webpack
+### HTML en Webpack
 
 Para trabajar con HTML y Webpack necesitamos instalar la siguiente
 dependencia:
@@ -152,9 +154,7 @@ del archivo [index.html](https://github.com/dan33pro/Webpack-portafolio-JS/blob/
 
 Ahora ya podemos correr `npm run build` y ver el resultado
 
-## Webpack y CSS
-
-### Loadrs para CCS
+### Loaders para CCS
 
 Comosiempre lo primero es agragar las depndencias de desarrollo que
 necesitamos, css-loader para procesar archivos .css y un plugin para
@@ -246,7 +246,7 @@ import './styles/vars.styl';
 
 Ahora ya podemos correr el comando `npm run dev` y ver que es lo que pasa.
 
-## Copia de archivos con Webpack
+### Copia de archivos con Webpack
 
 Instalamos el siguiente plugin:
 
@@ -276,7 +276,7 @@ new CopyPlugin({
 Y ahora en nuestro [Template.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/src/templates/Template.js) que esta dentro de `src/templates` vamos a modificar todas las lineas donde traemos imagenes de `src="../src/assets/images/twitter.png"` a `src="assets/images/twitter.png"`, con esto ya podemos probar como simepre con el comando `npm run dev`.
 
 
-## Loaders de imágenes
+### Loaders de imágenes
 
 Para este indice vamos a hacer uso de `asset module` que nos provee Webpack así que no tendremos que añadir ningun loader, para esto tenemos que añadir una nueva regla en el array `rules` para trabajar con archivos `.png`, así que en nuestro archivo de [webpack.config.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js)  añadimos el siguiente objeto dentro del arreglo mencionado.
 
@@ -304,7 +304,7 @@ Y en cada atributo `src=""` agregamos la variable especifica ejemplo:
 
 Ahora probemolo con `npm run dev`, ya con esto notaremos que las imagenes estaran optimizadas detro de la carpeta `dist`.
 
-## Loaders de fuentes
+### Loaders de fuentes
 
 Una buena practica cuando integramos fuentes en nuestros proyectos es dejar de llamarlas desde sitios externos sino incorporarlas directamente en nuestro proyecto, para esto necesitamos:
 
@@ -366,7 +366,7 @@ Una buena practica cuando integramos fuentes en nuestros proyectos es dejar de l
     Nuevamente podemos compilar nuestro proyecto con `npm run dev`.
 
     > No me cargaba la fuente, así que decidi probar otra cosa
-### Webpack 5 y conflictos
+#### Webpack 5 y conflictos
 
 Desde que salio Webpack 5 ya no es necesario instalar las dependencias de url-loader y file-loader.
 En la versión 5 de webpack integraron las funciones que hacían esas 2 dependencias a los assets modules.
@@ -385,7 +385,7 @@ Esto me generaba conflictos en el resultado, en su lugar en el array `rules` añ
 
 Con esto se solucionaron mis problemas
 
-## Optimización: hashes, compresión y minificación de archivos
+### Optimización: hashes, compresión y minificación de archivos
 
 Asignar un `hash` a cada archivo resulta importante para que nuestros usuarios no tengan problemas con la memoria cache una vez les entregamos una nueva versión, permitiendo que se carguen los recursos nuevos que remplazan a los antiguos.
 
@@ -451,7 +451,7 @@ Asignar un `hash` a cada archivo resulta importante para que nuestros usuarios n
 
 4. Ahora compilamos el proyecto `npm run dev`
 
-## Webpack Alias
+### Webpack Alias
 
 Los alias nos sirven para facilitar la legibilidad de nuestros `paths` solucionando problemas como el de devolverse entre directorios que es inlegible, para usarlos, en [webpack.config.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js) añadimos una nueva propiedad a `resolve` quedaría así
 
@@ -484,7 +484,9 @@ import instagram from '@images/instagram.png';
 
 Y compilamos `npm run build`
 
-## Variables de Entorno
+## Deploy del proyecto
+
+### Variables de Entorno
 
 Es importante considerar las variables de entorno va 
 a ser un espacio seguro donde podemos guardar datos sensibles.
@@ -529,3 +531,48 @@ a ser un espacio seguro donde podemos guardar datos sensibles.
     ```
 
 5. Por ultimo compilamos `npm run build`
+
+### Webpack en modo desarrollo
+
+1. Vamos a crear un nuevo archivo de configuración para separar las de
+desarrollo de las de producción, el archivo lleva el nombre de
+`webpack.config.dev.js`, en el copiamos todo lo de nuestro archivo
+[webpack.config.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js) pero removemos las siguientes lineas:
+
+    ```javascript
+    const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+    const TerserPlugin = require('terser-webpack-plugin');
+    ```
+
+    ```javascript
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new CssMinimizerPlugin(),
+            new TerserPlugin(),
+        ]
+    }
+    ```
+
+    Esto porque, en el modo desarrollo no nos intereza optimizar ni el `css`, ni el `JavaScript`, también añadimos la siguiente propiedad al `module.exports` 
+
+    ```javascript
+    mode: 'development',
+    ```
+
+2. Ahora nos movemos a nuestro archivo [package.json](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/package.json) y reemplazamos el `script` : 
+
+    ```json
+    "dev": "webpack --mode development"
+    ``` 
+
+    Por 
+
+    ```json
+    "dev": "webpack --config webpack.config.dev.js"
+    ```
+3. compilamos
+
+    ```npm
+    npm run dev
+    ```
