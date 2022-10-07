@@ -576,3 +576,48 @@ desarrollo de las de producción, el archivo lleva el nombre de
     ```npm
     npm run dev
     ```
+
+### Webpack en modo producción
+
+Ahora vamos a configurar el `Modo Producción` que ya esta separado, pero ahora queremos limpiar los archivos que van quedando en la carpeta `dist` tras cada compilación, para esto necesitamos añadir una linea a nuestro archivo de configuración `clean: true`
+
+```javascript
+output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].[contenthash].js',
+    assetModuleFilename: 'assets/images/[hash][ext][query]',
+    clean: true,
+},
+```
+
+#### Antes de Webpack 5
+
+Anteriormente teniamos que instalar una dependencia con
+
+```npm
+npm install clean-webpack-plugin -D
+```
+
+Y en el archivo de [webpack.config.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js) y agregabamos la siguiente constante
+
+```javascript
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+```
+
+Con el siguiente plugin en el arreglo `plugins` ademas de los que ya estaban
+
+```javascript
+new CleanWebpackPlugin(),
+```
+
+Y por ultimpo se reemplazaba la linea 
+
+```json
+"build": "webpack --mode production",
+```
+
+Por 
+
+```json
+"build": "webpack --mode production --config webpack.config.js",
+```
