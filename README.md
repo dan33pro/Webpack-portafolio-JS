@@ -757,3 +757,8 @@ compilando nuestro proyecto.
     ```npm
     npm run dev
     ```
+
+## Integración basica de React.js
+
+Esta parte la continuamos en el siguiente repo [proyecto](https://github.com/dan33pro/Webpack-React-JS)
+
