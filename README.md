@@ -450,3 +450,36 @@ Asignar un `hash` a cada archivo resulta importante para que nuestros usuarios n
     ```
 
 4. Ahora compilamos el proyecto `npm run dev`
+
+## Webpack Alias
+
+Los alias nos sirven para facilitar la legibilidad de nuestros `paths` solucionando problemas como el de devolverse entre directorios que es inlegible, para usarlos, en [webpack.config.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js) añadimos una nueva propiedad a `resolve` quedaría así
+
+```javascript
+resolve: {
+    extensions: ['.js'],
+    alias: {
+        '@utils': path.resolve(__dirname, 'src/utils/'),
+        '@templates': path.resolve(__dirname, 'src/templates/'),
+        '@styles': path.resolve(__dirname, 'src/styles/'),
+        '@images': path.resolve(__dirname, 'src/assets/images/'),
+    }
+},
+```
+
+Ya con estos `alias` podemos cambiar los `imports` de [index.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/src/index.js) y [Template.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/src/templates/Template.js), por estos respectivamente:
+
+```javascript
+import Template from '@templates/Template.js';
+import '@styles/main.css';
+import '@styles/vars.styl';
+```
+
+```javascript
+import getData from '@utils/getData.js';
+import github from '@images/github.png';
+import twitter from '@images/twitter.png';
+import instagram from '@images/instagram.png';
+```
+
+Y compilamos `npm run build`
