@@ -483,3 +483,49 @@ import instagram from '@images/instagram.png';
 ```
 
 Y compilamos `npm run build`
+
+## Variables de Entorno
+
+Es importante considerar las variables de entorno va 
+a ser un espacio seguro donde podemos guardar datos sensibles.
+
+1. Instalamos la dependencia necesaría con
+
+    ```npm
+    npm install dotenv-webpack -D
+    ```
+2. Añadimos la configuración necesaría
+
+    - Creamos un archivo `.env` donde van a estar las variables de entorno
+
+    > Este archivo no se sube al repositorio, y es secreto, el unico que
+    va a ser publico es un archivo llamado `.env-example`, que también
+    crearemos ahora.
+
+3. Nos vamos al archivo [webpack.config.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.js) y agregamos:
+
+    ```javascript
+    const Dotenv = require('dotenv-webpack');
+    ```
+
+    También en el arreglo de `plugins` vamos a introducri
+
+    ```javascript
+    new Dotenv(),
+    ```
+
+4. Ya configurada la dependencia, vamos al archivo [getData.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/src/utils/getData.js) que esta dentro de `src/utils/`.
+
+    - Reemplazamos la linea
+
+    ```javascript
+    const API = 'https://randomuser.me/api/';
+    ```
+
+    Por
+
+    ```javascript
+    const API = process.env.API;
+    ```
+
+5. Por ultimo compilamos `npm run build`
