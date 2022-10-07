@@ -651,4 +651,17 @@ la carpeta que quermos subir y el comando de compilación a produción, quedarí
     command = "npm run build"
 ```
 
-Subimos cambios a la nube
+Subimos cambios a la nube, al cargar el proyecto en `Netlify` veremos que el archivo `.env` no se carga
+porque no tiene permisos para hacerlo, en su lugar creamos un archivo `create-env.js` dentro de un folder `scripts` con lo siguiente:
+
+```javascript
+const fs = require('fs');
+fs.writeFileSync('./.env', `API = ${process.env.API} \n`);
+```
+
+Y en `Netlify` en la sección de `enviroment` podemos editar las `variables de entorno`
+acá agregamos `API`, y en nuestro script de `build` de [package.json](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/package.json) lo reemplasamos por:
+
+```json
+"build": "node ./scripts/create-env.js && webpack --mode production --config webpack.config.js",
+```
