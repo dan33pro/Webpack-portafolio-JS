@@ -665,3 +665,95 @@ acá agregamos `API`, y en nuestro script de `build` de [package.json](https://g
 ```json
 "build": "node ./scripts/create-env.js && webpack --mode production --config webpack.config.js",
 ```
+
+Netlify reconocera los cambios en enl repositorio y volvera a compilar y publicar, [Resultado](https://6340110bd130450009ad8414--legendary-entremet-fcbcbc.netlify.app/)
+
+## Herramientas de desarrollo
+
+### Webpack Dev Server
+
+Cuando estamos editando nuestro proyecto queremos tener un local server
+para ver nuestros cambios en tiempo real. Para esto instalamos la
+dependencia 
+
+    ```npm
+    npm install webpack-dev-server -D
+    ```
+
+Vamos a añadir la configuración a nuestro [webpack.config.dev.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.dev.js), en la parte inferior de `module.exports` ponemos:
+
+```javascript
+devServer: {
+    static: path.join(__dirname, 'dist'),
+    compress: true,
+    historyApiFallback: true,
+    port: 3006,
+    open: true,
+},
+```
+
+Luego agregamos un script en nuestro [package.json](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/package.json)
+que es el siguiente:
+
+```json
+"start": "webpack serve --config webpack.config.dev.js"
+```
+
+Y corremos con `npm run start`, veremos que nos recomienda quitar `watch: true` de las configuraciones,
+ya que con esto no es necesario.
+
+### Webpack Bundle Analyzer
+
+Una dependecia que nos ayuda a optimizar nuestros proyectos, con ella podemos
+identificar que archivos estan siendo muy pesados en nuestro proyecto.
+
+1. Instalamos la dependencia
+
+    ```npm
+    npm install webpack-bundle-analyzer -D
+    ```
+
+2. Agregamos la configuración necesaria en [webpack.config.dev.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.dev.js), ponemos una nueva constante: 
+
+    ```javascript
+    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+    ```
+
+    Y agregamos el `plugin`
+
+    ```javascript
+    new BundleAnalyzerPlugin(),
+    ```
+
+3. Ahora corremos el siguiente comando, que analizara el proyecto y genera un reporte
+con el resultado de las dependencias y recursos que se estan usando:
+    
+    ```npm
+    npx webpack --profile --json > stats.json
+    ```
+
+4. Con este archivo ya podemos usar `bundle analyzer` con el comando:
+
+    ```npm
+    npx webpack-bundle-analyzer stats.json
+    ```
+
+    En el sitio local que crea nos muestra que partes de nuestro proyecto estan 
+    tomando todo el peso para saber que partes optimizar.
+
+### Webpack DevTools
+
+Este modo nos crea un mapa de nuestro código y que particularidades esta 
+compilando nuestro proyecto.
+
+1. En nuestro [webpack.config.dev.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.dev.js) agregamos la propiedad siguiente propiedad en `module.exports`
+
+    ```javascript
+    devtool: 'source-map',
+    ```
+
+    Y compilamos con
+
+    ```npm
+    npm run dev
+    ```
