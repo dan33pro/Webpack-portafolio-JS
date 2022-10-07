@@ -352,6 +352,7 @@ Una buena practica cuando integramos fuentes en nuestros proyectos es dejar de l
     }
     ```
     > Esta regla ya no es necesaria tal como esta arriba, revisar más abajo `Webpack 5 y conflictos`
+    
     Y en la propiedad `output` del `module.exports` quedaría así
 
     ```javascript
