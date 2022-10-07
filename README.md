@@ -621,3 +621,34 @@ Por
 ```json
 "build": "webpack --mode production --config webpack.config.js",
 ```
+
+### Webpack Watch
+
+Este modo nos permite estar escuchando los cambios de nu proyecto y 
+compilar segun cuando es necesario, para activarlo necesitamos configurar
+nuestra archivo [webpack.config.dev.js](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/webpack.config.dev.js), añadiendo la linea
+    
+    ```javascript
+    watch: true,
+    ```
+
+Con esto veremos que al correr `npm run dev` se quedara esperando en 
+la consola cambios. Otra forma de activarlo es en [package.json](https://github.com/dan33pro/Webpack-portafolio-JS/blob/main/package.json) donde
+podemos añadir el siguiente script, con la configuarción que queramos:
+
+```json
+"build:watch": "webpack --watch --config webpack.config.js"
+```
+
+### Deploy a Neltify
+
+Para hacer este despliegue agregamos un nuevo archivo `netlify.toml` donde agregaremos
+la carpeta que quermos subir y el comando de compilación a produción, quedaría así:
+
+```toml
+[build]
+    publish = "dist"
+    command = "npm run build"
+```
+
+Subimos cambios a la nube
