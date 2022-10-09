@@ -2,7 +2,7 @@
 Este es el proyecto que trabajamos en el curso de Webpack, que es
 profesor Oscar Barajas [repoOriginal](https://github.com/gndx/js-portfolio)
 
-**Indice**
+## Indice
 1. [Configuración del proyecto](#configuración-del-proyecto)
 2. [Loaders y Plugins en Webpack](#loaders-y-plugins-en-webpack)
     1. [Babel Loader para JavaScript](#babel-loader-para-javascript)
