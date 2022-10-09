@@ -2,6 +2,32 @@
 Este es el proyecto que trabajamos en el curso de Webpack, que es
 profesor Oscar Barajas [repoOriginal](https://github.com/gndx/js-portfolio)
 
+**Indice**
+1. [Configuración del proyecto](#configuración-del-proyecto)
+2. [Loaders y Plugins en Webpack](#loaders-y-plugins-en-webpack)
+    1. [Babel Loader para JavaScript](#babel-loader-para-javascript)
+    2. [HTML en Webpack](#html-en-webpack)
+    3. [Loaders para CCS](#loaders-para-ccs)
+    4. [Preprocesadores CSS (Stylus)](#preprocesadores-css-stylus)
+    5. [Copia de archivos con Webpack](#copia-de-archivos-con-webpack)
+    6. [Loaders de imágenes](#loaders-de-imágenes)
+    7. [Loaders de fuentes](#loaders-de-fuentes)
+        1. [Webpack 5 y conflictos](#webpack-5-y-conflictos)
+    8. [Optimización: hashes, compresión y minificación de archivos](#optimización-hashes-compresión-y-minificación-de-archivos)
+    9. [Webpack Alias](#webpack-alias)
+3. [Deploy del proyecto](#deploy-del-proyecto)
+    1. [Variables de Entorno](#variables-de-entorno)
+    2. [Webpack en modo desarrollo](#webpack-en-modo-desarrollo)
+    3. [Webpack en modo producción](#webpack-en-modo-producción)
+        1. [Antes de Webpack 5](#antes-de-webpack-5)
+    4. [Webpack Watch](#webpack-watch)
+    5. [Deploy a Neltify](#deploy-a-neltify)
+4. [Herramientas de desarrollo](#herramientas-de-desarrollo)
+    1. [Webpack Dev Server](#webpack-dev-server)
+    2. [Webpack Bundle Analyzer](#webpack-bundle-analyzer)
+    3. [Webpack DevTools](#webpack-devtools)
+5. [Integración basica de React.js](#integración-basica-de-reactjs)
+
 ## Configuración del proyecto
 
 Lo primero que se hizo fue organizar la estructura base del
